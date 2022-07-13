@@ -104,7 +104,6 @@ class ScriptObjectTest {
 
 		class Update {
 			test1_CheckConnection() {
-
 				res := ScriptObj.isConnectedToInternet()
 				Yunit.Assert(InStr(res, "<!doctype html>"))
 			}
@@ -117,6 +116,30 @@ class ScriptObjectTest {
 					if upcomingVer[A_Index] != vNum
 						Yunit.Assert(false)
 			}
+			test3_CheckNewVersionTrue() {
+				script := ScriptObj()
+				script.version := "1.31.0"
+
+				verFile := "https://raw.githubusercontent.com/RaptorX/WindowSnipping/master/ver"
+				upcomingVer := ScriptObj.GetUpcomingVersion(verFile)
+				if ScriptObj.isNewVersionAvailable(script.version, upcomingVer)
+					Yunit.Assert(true)
+				else
+					Yunit.Assert(false)
+
+			}
+
+			test3_CheckNewVersionFalse() {
+				script := ScriptObj()
+				script.version := "1.32.0"
+
+				verFile := "https://raw.githubusercontent.com/RaptorX/WindowSnipping/master/ver"
+				upcomingVer := ScriptObj.GetUpcomingVersion(verFile)
+				if !ScriptObj.isNewVersionAvailable(script.version, upcomingVer)
+					Yunit.Assert(true)
+				else
+					Yunit.Assert(false)
+
 			}
 		}
 	}

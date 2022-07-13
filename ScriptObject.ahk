@@ -148,6 +148,17 @@ class ScriptObj {
 		return http.responseText
 	}
 
+	static isNewVersionAvailable(current, upcoming) {
+		if Type(current) != "Array"
+		|| Type(upcoming) != "Array"
+			throw ValueError("Invalid value. This function only accepts arrays.",
+			                 A_ThisFunc, "current: " Type(current) " / upcoming: " Type(upcoming))
+
+		loop 3
+			if (upcoming[A_Index] > current[A_Index])
+				return true
+		return false
+	}
 
 	static GetUpcomingVersion(verFile) {
 		static VARIANT_TRUE  := -1
