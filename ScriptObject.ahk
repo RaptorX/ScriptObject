@@ -42,7 +42,7 @@
 * Params: NONE
 * Returns: NONE
 */
-class Script 
+class ScriptObj
 {
 	
 }
