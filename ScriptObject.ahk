@@ -69,6 +69,7 @@ class ScriptObj {
 	 */
 	Autostart(status) {
 		if status ~= "[^01]"
+		|| Type(status) != "Integer"
 			throw ValueError("This property can only be true or false",
 			                 A_ThisFunc, status)
 
