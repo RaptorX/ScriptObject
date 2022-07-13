@@ -36,7 +36,7 @@
 
 /**
 * Class: Script
-* 
+*
 * Small library to add similar functionality to all scripts
 *
 * Params: NONE
@@ -48,6 +48,33 @@ class ScriptObj
 		get => RegExReplace(A_ScriptName, "\..*$")
 		set {
 			throw MemberError("This property is read only", A_ThisFunc, "Name")
+		}
+	}
+
+	/**
+	* Function: Autostart(status)
+	* This Adds the current script to the autorun section for the current
+	* user.
+	*
+	* Parameters:
+	* status - Autostart status, It can be either true or false.
+	*/
+	Autostart(status) {
+		if status ~= "[^01]"
+			throw ValueError("This property can only be true or false",
+			                 A_ThisFunc, status)
+
+		if status
+		{
+			RegWrite A_ScriptFullPath,
+			         "REG_SZ",
+			         "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Run",
+			         A_ScriptName
+		}
+		else
+		{
+			RegDelete "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Run",
+			          A_ScriptName
 		}
 	}
 }
