@@ -50,6 +50,15 @@ class ScriptObj {
 		}
 	}
 
+	version {
+		get => this._version
+		set {
+			if Type(Value) = "String" && RegExMatch(Value, "\d+\.\d+\.\d+")
+				return this._version := StrSplit(Value, ".")
+			else
+				throw ValueError("This property must be a SemVer string.", A_ThisFunc, "Version:" Value)
+		}
+	}
 	/**
 	Function: Autostart(status)
 	This Adds the current script to the autorun section for the current
@@ -115,7 +124,7 @@ class ScriptObj {
 			WinSetTransparent alpha
 			sleep 10
 		}
-		
+
 		splash.Destroy()
 		return
 	}

@@ -10,6 +10,13 @@ class ScriptObjectTest {
 			script := ScriptObj()
 			Yunit.Assert(script.name == "Unit Tests")
 		}
+
+		test2_version() {
+			script := ScriptObj()
+			script.version := "1.30.0"
+			Yunit.Assert(Type(script.version) = "Array")
+
+		}
 	}
 
 	class MethodTests {
