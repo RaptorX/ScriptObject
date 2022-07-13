@@ -16,6 +16,12 @@ class ScriptObjectTest
 
 	class MethodTests
 	{
+		Test_Splash()
+		{
+			script := ScriptObj()
+			script.Splash(A_MyDocuments "\AutoHotkey\v1\AHK-Toolkit\res\img\AHK-TK_Splash.png")
+		}
+		
 		class AutoStart
 		{
 			Test1_SetAutoStart(){

@@ -52,13 +52,13 @@ class ScriptObj
 	}
 
 	/**
-	* Function: Autostart(status)
-	* This Adds the current script to the autorun section for the current
-	* user.
-	*
-	* Parameters:
-	* status - Autostart status, It can be either true or false.
-	*/
+	 * Function: Autostart(status)
+	 * This Adds the current script to the autorun section for the current
+	 * user.
+	 *
+	 * Parameters:
+	 * status - Autostart status, It can be either true or false.
+	 */
 	Autostart(status) {
 		if status ~= "[^01]"
 			throw ValueError("This property can only be true or false",
@@ -77,4 +77,49 @@ class ScriptObj
 			          A_ScriptName
 		}
 	}
+
+	/**
+	 * Function: Splash
+	 * Shows a custom image as a splash screen with a simple fading animation
+	 * 
+	 * Parameters:
+	 * img         - file to be displayed.
+	 * speed (opt) - how fast the fading animation will be. Higher value is faster.
+	 * pause (opt) - how long (in seconds) the image will be paused after fully displayed.
+	 */
+	Splash(img, speed:=10, pause:=2)
+	{
+		alpha := 0
+		splash := Gui("-Caption +LastFound +AlwaysOnTop +Owner")
+		picCtrl := splash.AddPicture("x0 y0", img)
+		picCtrl.GetPos(,,&pWidth, &pHeight)
+		WinSetTransparent alpha
+
+		splash.Show("w " pWidth " h" pHeight)
+
+		loop 255
+		{
+			if (alpha >= 255)
+				break
+			alpha += speed
+			WinSetTransparent alpha
+			sleep 10
+		}
+
+		; pause duration in seconds
+		Sleep pause * 1000
+
+		loop 255
+		{
+			if (alpha <= 0)
+				break
+			alpha -= speed
+			WinSetTransparent alpha
+			sleep 10
+		}
+		
+		splash.Destroy()
+		return
+	}
+
 }
