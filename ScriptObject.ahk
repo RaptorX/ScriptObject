@@ -51,12 +51,12 @@ class ScriptObj {
 	}
 
 	/**
-	 * Function: Autostart(status)
-	 * This Adds the current script to the autorun section for the current
-	 * user.
-	 *
-	 * Parameters:
-	 * status - Autostart status, It can be either true or false.
+	Function: Autostart(status)
+	This Adds the current script to the autorun section for the current
+	user.
+
+	Parameters:
+	status - Autostart status, It can be either true or false.
 	 */
 	Autostart(status) {
 		if status ~= "[^01]"
@@ -78,13 +78,13 @@ class ScriptObj {
 	}
 
 	/**
-	 * Function: Splash
-	 * Shows a custom image as a splash screen with a simple fading animation
-	 * 
-	 * Parameters:
-	 * img         - file to be displayed.
-	 * speed (opt) - how fast the fading animation will be. Higher value is faster.
-	 * pause (opt) - how long (in seconds) the image will be paused after fully displayed.
+	Function: Splash
+	Shows a custom image as a splash screen with a simple fading animation
+
+	Parameters:
+	img         - file to be displayed.
+	speed (opt) - how fast the fading animation will be. Higher value is faster.
+	pause (opt) - how long (in seconds) the image will be paused after fully displayed.
 	 */
 	Splash(img, speed:=10, pause:=2) {
 		alpha := 0
