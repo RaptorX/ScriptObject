@@ -130,4 +130,22 @@ class ScriptObj {
 		return
 	}
 
+
+	static isConnectedToInternet() {
+		static VARIANT_TRUE  := -1
+		static VARIANT_FALSE := 0
+
+		http := ComObject("WinHttp.WinHttpRequest.5.1")
+
+		http.Open("GET", "https://google.com", VARIANT_TRUE)
+		http.Send()
+
+		; WaitForResponse throws if cant resolve the name of the server
+		try http.WaitForResponse()
+		catch
+			return false
+
+		return http.responseText
+	}
+
 }

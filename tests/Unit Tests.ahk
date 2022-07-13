@@ -96,7 +96,20 @@ class ScriptObjectTest {
 				script := ScriptObj()
 				try script.Autostart(Map())
 				catch
+					return Yunit.Assert(true)
+
+				Yunit.Assert(false)
+			}
+		}
+
 		class Update {
+			test1_CheckConnection() {
+
+				res := ScriptObj.isConnectedToInternet()
+				Yunit.Assert(InStr(res, "<!doctype html>"))
+			}
+
+			test2_GetUpcomingVersion(){
 				Yunit.Assert(false)
 			}
 		}
