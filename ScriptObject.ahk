@@ -44,5 +44,10 @@
 */
 class ScriptObj
 {
-	
+	name {
+		get => RegExReplace(A_ScriptName, "\..*$")
+		set {
+			throw MemberError("This property is read only", A_ThisFunc, "Name")
+		}
+	}
 }

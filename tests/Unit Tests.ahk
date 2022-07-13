@@ -6,5 +6,11 @@ Yunit.Use(YunitWindow).Test(ScriptObjectTest)
 
 class ScriptObjectTest
 {
-
+	class PropertyTests
+	{
+		Test1_name(){
+			script := {base: ScriptObj()}
+			Yunit.Assert(script.name == "Unit Tests")
+		}
+	}
 }
