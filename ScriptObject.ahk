@@ -148,4 +148,17 @@ class ScriptObj {
 		return http.responseText
 	}
 
+
+	static GetUpcomingVersion(verFile) {
+		static VARIANT_TRUE  := -1
+		static VARIANT_FALSE := 0
+
+		verFile := !(verFile ~= "^https?:\/\/") ? "https://" verFile : verFile
+		http := ComObject("WinHttp.WinHttpRequest.5.1")
+		http.Open("GET", verFile, VARIANT_TRUE)
+		http.Send()
+		http.WaitForResponse(1)
+
+		return StrSplit(http.responseText, '.')
+	}
 }

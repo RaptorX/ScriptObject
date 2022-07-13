@@ -110,7 +110,13 @@ class ScriptObjectTest {
 			}
 
 			test2_GetUpcomingVersion(){
-				Yunit.Assert(false)
+				verFile := "https://raw.githubusercontent.com/RaptorX/WindowSnipping/master/ver"
+				
+				upcomingVer := ScriptObj.GetUpcomingVersion(verFile)
+				for vNum in ["1","32","0"]
+					if upcomingVer[A_Index] != vNum
+						Yunit.Assert(false)
+			}
 			}
 		}
 	}
