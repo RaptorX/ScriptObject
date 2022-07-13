@@ -4,25 +4,21 @@
 
 Yunit.Use(YunitWindow).Test(ScriptObjectTest)
 
-class ScriptObjectTest
-{
-	class PropertyTests
-	{
-		Test1_name() {
+class ScriptObjectTest {
+	class PropertyTests {
+		test1_name() {
 			script := ScriptObj()
 			Yunit.Assert(script.name == "Unit Tests")
 		}
 	}
 
-	class MethodTests
-	{
-		Test_Splash() {
+	class MethodTests {
 			script := ScriptObj()
 			script.Splash(A_MyDocuments "\AutoHotkey\v1\AHK-Toolkit\res\img\AHK-TK_Splash.png")
 		}
 		
 		class AutoStart {
-			Test1_SetAutoStart() {
+			test1_SetAutoStart() {
 				script := ScriptObj()
 				script.Autostart(true)
 
@@ -30,7 +26,7 @@ class ScriptObjectTest
 				Yunit.Assert(cVal == A_ScriptFullPath)
 			}
 
-			Test2_RemoveAutoStart() {
+			test2_RemoveAutoStart() {
 				script := ScriptObj()
 				script.Autostart(false)
 
@@ -43,7 +39,7 @@ class ScriptObjectTest
 				Yunit.Assert(false)
 			}
 
-			Test3_InvalidValueString() {
+			test3_InvalidValueString() {
 				script := ScriptObj()
 				try script.Autostart("val")
 				catch
@@ -52,7 +48,7 @@ class ScriptObjectTest
 				Yunit.Assert(false)
 			}
 
-			Test4_InvalidValueNot1Or0() {
+			test4_InvalidValueNot1Or0() {
 				script := ScriptObj()
 				try script.Autostart(3)
 				catch
@@ -61,7 +57,7 @@ class ScriptObjectTest
 				Yunit.Assert(false)
 			}
 
-			Test5_InvalidValueBlank() {
+			test5_InvalidValueBlank() {
 				script := ScriptObj()
 				try script.Autostart("")
 				catch
@@ -70,7 +66,7 @@ class ScriptObjectTest
 				Yunit.Assert(false)
 			}
 
-			Test6_InvalidValueObject() {
+			test6_InvalidValueObject() {
 				script := ScriptObj()
 				try script.Autostart({})
 				catch
@@ -79,7 +75,7 @@ class ScriptObjectTest
 				Yunit.Assert(false)
 			}
 
-			Test7_InvalidValueArray() {
+			test7_InvalidValueArray() {
 				script := ScriptObj()
 				try script.Autostart([])
 				catch
@@ -88,12 +84,11 @@ class ScriptObjectTest
 				Yunit.Assert(false)
 			}
 
-			Test7_InvalidValueMap() {
+			test7_InvalidValueMap() {
 				script := ScriptObj()
 				try script.Autostart(Map())
 				catch
-					Yunit.Assert(true), Exit()
-
+		class Update {
 				Yunit.Assert(false)
 			}
 		}
