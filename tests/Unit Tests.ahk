@@ -8,7 +8,7 @@ class ScriptObjectTest
 {
 	class PropertyTests
 	{
-		Test1_name(){
+		Test1_name() {
 			script := ScriptObj()
 			Yunit.Assert(script.name == "Unit Tests")
 		}
@@ -16,15 +16,13 @@ class ScriptObjectTest
 
 	class MethodTests
 	{
-		Test_Splash()
-		{
+		Test_Splash() {
 			script := ScriptObj()
 			script.Splash(A_MyDocuments "\AutoHotkey\v1\AHK-Toolkit\res\img\AHK-TK_Splash.png")
 		}
 		
-		class AutoStart
-		{
-			Test1_SetAutoStart(){
+		class AutoStart {
+			Test1_SetAutoStart() {
 				script := ScriptObj()
 				script.Autostart(true)
 
@@ -32,7 +30,7 @@ class ScriptObjectTest
 				Yunit.Assert(cVal == A_ScriptFullPath)
 			}
 
-			Test2_RemoveAutoStart(){
+			Test2_RemoveAutoStart() {
 				script := ScriptObj()
 				script.Autostart(false)
 
@@ -45,7 +43,7 @@ class ScriptObjectTest
 				Yunit.Assert(false)
 			}
 
-			Test3_InvalidValueString(){
+			Test3_InvalidValueString() {
 				script := ScriptObj()
 				try script.Autostart("val")
 				catch
@@ -54,7 +52,7 @@ class ScriptObjectTest
 				Yunit.Assert(false)
 			}
 
-			Test4_InvalidValueNot1Or0(){
+			Test4_InvalidValueNot1Or0() {
 				script := ScriptObj()
 				try script.Autostart(3)
 				catch
@@ -63,7 +61,7 @@ class ScriptObjectTest
 				Yunit.Assert(false)
 			}
 
-			Test5_InvalidValueBlank(){
+			Test5_InvalidValueBlank() {
 				script := ScriptObj()
 				try script.Autostart("")
 				catch
@@ -72,7 +70,7 @@ class ScriptObjectTest
 				Yunit.Assert(false)
 			}
 
-			Test6_InvalidValueObject(){
+			Test6_InvalidValueObject() {
 				script := ScriptObj()
 				try script.Autostart({})
 				catch
@@ -81,7 +79,7 @@ class ScriptObjectTest
 				Yunit.Assert(false)
 			}
 
-			Test7_InvalidValueArray(){
+			Test7_InvalidValueArray() {
 				script := ScriptObj()
 				try script.Autostart([])
 				catch
@@ -90,7 +88,7 @@ class ScriptObjectTest
 				Yunit.Assert(false)
 			}
 
-			Test7_InvalidValueMap(){
+			Test7_InvalidValueMap() {
 				script := ScriptObj()
 				try script.Autostart(Map())
 				catch

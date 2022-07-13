@@ -42,8 +42,7 @@
 * Params: NONE
 * Returns: NONE
 */
-class ScriptObj
-{
+class ScriptObj {
 	name {
 		get => RegExReplace(A_ScriptName, "\..*$")
 		set {
@@ -87,8 +86,7 @@ class ScriptObj
 	 * speed (opt) - how fast the fading animation will be. Higher value is faster.
 	 * pause (opt) - how long (in seconds) the image will be paused after fully displayed.
 	 */
-	Splash(img, speed:=10, pause:=2)
-	{
+	Splash(img, speed:=10, pause:=2) {
 		alpha := 0
 		splash := Gui("-Caption +LastFound +AlwaysOnTop +Owner")
 		picCtrl := splash.AddPicture("x0 y0", img)
