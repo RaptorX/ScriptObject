@@ -34,7 +34,7 @@ class ScriptObjectTest {
 				; was successful
 				try RegRead("HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Run", A_ScriptName)
 				catch
-					Yunit.Assert(true), Exit()
+					return Yunit.Assert(true)
 
 				Yunit.Assert(false)
 			}
@@ -43,7 +43,7 @@ class ScriptObjectTest {
 				script := ScriptObj()
 				try script.Autostart("val")
 				catch
-					Yunit.Assert(true), Exit()
+					return Yunit.Assert(true)
 
 				Yunit.Assert(false)
 			}
@@ -52,7 +52,7 @@ class ScriptObjectTest {
 				script := ScriptObj()
 				try script.Autostart(3)
 				catch
-					Yunit.Assert(true), Exit()
+					return Yunit.Assert(true)
 
 				Yunit.Assert(false)
 			}
@@ -61,7 +61,7 @@ class ScriptObjectTest {
 				script := ScriptObj()
 				try script.Autostart("")
 				catch
-					Yunit.Assert(true), Exit()
+					return Yunit.Assert(true)
 
 				Yunit.Assert(false)
 			}
@@ -70,7 +70,7 @@ class ScriptObjectTest {
 				script := ScriptObj()
 				try script.Autostart({})
 				catch
-					Yunit.Assert(true), Exit()
+					return Yunit.Assert(true)
 
 				Yunit.Assert(false)
 			}
@@ -79,7 +79,7 @@ class ScriptObjectTest {
 				script := ScriptObj()
 				try script.Autostart([])
 				catch
-					Yunit.Assert(true), Exit()
+					return Yunit.Assert(true)
 
 				Yunit.Assert(false)
 			}
