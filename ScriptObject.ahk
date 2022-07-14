@@ -172,4 +172,77 @@ class ScriptObj {
 
 		return StrSplit(http.responseText, '.')
 	}
+
+	static InstallNewVersion(dwnFile) {
+		if !InStr(dwnFile, ".zip")
+			throw ValueError("The file to download must be a Zip File")
+		
+		cleanName := A_Temp "\" RegExReplace(A_ScriptName, "\..*$")
+		items := [tmpDir  :=cleanName,
+		          zipDir  :=cleanName "\uzip",
+		          lockFile:=cleanName "-lockfile",
+		          zipFile :=cleanName "-update.zip"]
+		
+		; cleanup
+		for item in items
+			if FileExist(item)
+				(A_Index > 2 ?  FileDelete(item) : DirDelete(item, true))
+		
+		DirCreate tmpDir
+		DirCreate zipDir
+		
+		FileAppend A_Now, lockFile
+		Download dwnFile, zipFile
+
+		; Extract zip file to temporal folder
+		oShell := ComObject("Shell.Application")
+		oDir := oShell.NameSpace(zipDir), oZipFile := oShell.NameSpace(zipFile)
+		oDir.CopyHere(oZipFile.Items)
+
+	; { unfoldable variables
+		tmpBatch :=
+		(Ltrim
+			':lock
+			timeout /t 2
+			if not exist "' lockFile '" goto continue
+			goto lock
+			:continue
+
+			xcopy "' zipDir '\*.*" "' A_ScriptDir '\" /E /C /I /Q /R /K /Y
+			if exist "' A_ScriptFullPath '" cmd /C "' A_ScriptFullPath '"
+
+			cmd /C "rmdir "' tmpDir '" /S /Q"
+			exit'
+		)
+		tmpScript :=
+		(Ltrim
+			'while (FileExist("' lockFile '"))
+				sleep 10
+
+			DirCopy "' zipDir '\", "' A_ScriptDir '", true
+
+			if MsgBox("Do you want to load the new script?", "Update Successful", "Y/N") = "No"
+				ExitApp
+			
+			if (FileExist("' A_ScriptFullPath '"))
+				Run "' A_ScriptFullPath '"
+			else
+				MsgBox "There was an error while running the updated version.``n" 
+				     . "Try to run the program manually.", 
+				       "Update Error", 
+				       0x10 + 0x1000
+			ExitApp'
+		)
+	; }
+		
+		FileAppend A_IsCompiled ? tmpBatch : tmpScript, tmpDir "\update.bat"
+		
+		if A_IsCompiled
+			Run A_ComSpec ' /c "' tmpDir '\update.bat"',, "Hide"
+		else
+			Run '"' A_AhkPath '" "' tmpDir '\update.bat"'
+		
+		FileDelete lockFile
+		ExitApp
+	}
 }

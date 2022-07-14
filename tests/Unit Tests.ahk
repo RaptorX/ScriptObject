@@ -131,7 +131,7 @@ class ScriptObjectTest {
 
 			}
 
-			test3_CheckNewVersionFalse() {
+			test4_CheckNewVersionFalse() {
 				script := ScriptObj()
 				script.version := "1.32.0"
 
@@ -142,6 +142,14 @@ class ScriptObjectTest {
 				else
 					Yunit.Assert(false)
 
+			}
+			
+			test5_InstallNewVersion() {
+				if FileExist("WindowSnipping.ahk")
+					return
+				
+				ScriptObj.InstallNewVersion("https://github.com/RaptorX/WindowSnipping/releases/download/latest/WindowSnipping.zip")
+				Yunit.Assert(FileExist("WindowSnipping.ahk"))
 			}
 		}
 	}
