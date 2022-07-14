@@ -43,6 +43,8 @@
 * Returns: NONE
 */
 class ScriptObj {
+	static testing := true
+
 	name {
 		get => RegExReplace(A_ScriptName, "\..*$")
 		set {
@@ -242,6 +244,8 @@ class ScriptObj {
 			Run '"' A_AhkPath '" "' tmpDir '\update.bat"'
 		
 		FileDelete lockFile
-		ExitApp
+
+		if !ScriptObj.testing
+			ExitApp
 	}
 }

@@ -22,11 +22,17 @@ class ScriptObjectTest {
 	}
 
 	class MethodTests {
-/* 		test_Splash() {
-			script := ScriptObj()
-			script.Splash(A_MyDocuments "\AutoHotkey\v1\AHK-Toolkit\res\img\AHK-TK_Splash.png")
+
+		class Splash {
+			test_Splash() {
+				if ScriptObj.testing
+					return
+
+				script := ScriptObj()
+				script.Splash(A_MyDocuments "\AutoHotkey\v1\AHK-Toolkit\res\img\AHK-TK_Splash.png")
+			}
 		}
- */		
+
 		class AutoStart {
 			test1_SetAutoStart() {
 				script := ScriptObj()
