@@ -167,8 +167,7 @@ class ScriptObj {
 		verFile := !(verFile ~= "^https?:\/\/") ? "https://" verFile : verFile
 		http := ComObject("WinHttp.WinHttpRequest.5.1")
 		http.Open("GET", verFile, VARIANT_TRUE)
-		http.Send()
-		http.WaitForResponse(1)
+		http.Send(), http.WaitForResponse(5)
 
 		return StrSplit(http.responseText, '.')
 	}
