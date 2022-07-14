@@ -1,3 +1,5 @@
+#Requires Autohotkey v2.0-
+
 #Include <Yunit\Yunit>
 #Include <Yunit\Window>
 #Include <ScriptObject\ScriptObject>
