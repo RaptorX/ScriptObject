@@ -163,6 +163,36 @@ class ScriptObjectTest {
 				ScriptObjectTest.MethodTests.Update.CleanUp()
 			}
 
+			test6_UpdateTrue() {
+				if FileExist("WindowSnipping.ahk")
+					return ScriptObjectTest.MethodTests.Update.CleanUp()
+
+				script := ScriptObj()
+				script.version := "1.31.0"
+
+				script.Update("https://raw.githubusercontent.com/RaptorX/WindowSnipping/master/ver",
+				              "https://github.com/RaptorX/WindowSnipping/releases/download/latest/WindowSnipping.zip")
+
+				Sleep 1000 ; external update script takes a moment to copy the files
+				Yunit.Assert(FileExist("WindowSnipping.ahk"))
+
+				ScriptObjectTest.MethodTests.Update.CleanUp()
+
+			}
+			
+			test7_UpdateFalse() {
+				if FileExist("WindowSnipping.ahk")
+					return ScriptObjectTest.MethodTests.Update.CleanUp()
+
+				script := ScriptObj()
+				script.version := "1.32.0"
+
+				try script.Update("https://raw.githubusercontent.com/RaptorX/WindowSnipping/master/ver",
+				              "https://github.com/RaptorX/WindowSnipping/releases/download/latest/WindowSnipping.zip")
+
+				catch
+					Yunit.Assert(true)
+			}
 
 			static CleanUp() {
 				FileDelete "WindowSnipping.ahk"

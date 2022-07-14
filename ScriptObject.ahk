@@ -132,6 +132,44 @@ class ScriptObj {
 		return
 	}
 
+	/**
+	Function: Update(verFile, dwnFile)
+	Checks for the current script version
+	Downloads the remote version information
+	Compares and automatically downloads the new script file and reloads the script.
+
+	Parameters:
+	verFile - Version File
+	          Remote version file to be validated against.
+	dwnFile - Download File
+	          Script file to be downloaded and installed if a new version is found.
+	          Should be a zip file that will be unzipped by the function
+
+	Notes:
+	The versioning file should only contain a version string and nothing else.
+	The matching will be performed against a SemVer format and only the three
+	major components will be taken into account.
+
+	e.g. '1.0.0'
+
+	For more information about SemVer and its specs click here: <https://semver.org/>
+	*/
+	Update(verFile, dwnFile) {
+		if !this.version
+			throw MemberError("You need to set the version property of the script.", A_ThisFunc)
+		
+		if !ScriptObj.isConnectedToInternet()
+			throw Error("No internet connection.", A_ThisFunc)
+		
+		; compare versions
+		upcomingVer := ScriptObj.GetUpcomingVersion(verFile)
+		
+		if !ScriptObj.isNewVersionAvailable(this.version, upcomingVer)
+			throw Error("No new version available.", A_ThisFunc, 1)
+		
+		; download and install update
+		ScriptObj.InstallNewVersion(dwnFile)
+	}
 
 	static isConnectedToInternet() {
 		static VARIANT_TRUE  := -1
