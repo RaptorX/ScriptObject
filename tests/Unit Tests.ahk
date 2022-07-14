@@ -116,14 +116,15 @@ class ScriptObjectTest {
 				Yunit.Assert(InStr(res, "<!doctype html>"))
 			}
 
-			test2_GetUpcomingVersion(){
+			test2_GetUpcomingVersion() {
 				verFile := "https://raw.githubusercontent.com/RaptorX/WindowSnipping/master/ver"
-				
+
 				upcomingVer := ScriptObj.GetUpcomingVersion(verFile)
 				for vNum in ["1","32","0"]
 					if upcomingVer[A_Index] != vNum
 						Yunit.Assert(false)
 			}
+
 			test3_CheckNewVersionTrue() {
 				script := ScriptObj()
 				script.version := "1.31.0"
@@ -149,13 +150,24 @@ class ScriptObjectTest {
 					Yunit.Assert(false)
 
 			}
-			
+
 			test5_InstallNewVersion() {
 				if FileExist("WindowSnipping.ahk")
-					return
-				
+					return ScriptObjectTest.MethodTests.Update.CleanUp()
+
 				ScriptObj.InstallNewVersion("https://github.com/RaptorX/WindowSnipping/releases/download/latest/WindowSnipping.zip")
+
+				Sleep 1000 ; external update script takes a moment to copy the files
 				Yunit.Assert(FileExist("WindowSnipping.ahk"))
+
+				ScriptObjectTest.MethodTests.Update.CleanUp()
+			}
+
+
+			static CleanUp() {
+				FileDelete "WindowSnipping.ahk"
+				for dir in ["lib", "res"]
+					DirDelete dir, true
 			}
 		}
 	}
