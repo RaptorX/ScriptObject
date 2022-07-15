@@ -39,8 +39,6 @@
 *
 * Small library to add similar functionality to all scripts
 *
-* Params: NONE
-* Returns: NONE
 */
 class ScriptObj {
 	static testing := true
@@ -61,6 +59,7 @@ class ScriptObj {
 				throw ValueError("This property must be a SemVer string.", A_ThisFunc, "Version:" Value)
 		}
 	}
+	
 	/**
 	Function: Autostart(status)
 	This Adds the current script to the autorun section for the current
