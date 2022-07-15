@@ -84,8 +84,8 @@ class ScriptObj {
 		}
 		else
 		{
-			RegDelete "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Run",
-			          A_ScriptName
+			try RegDelete "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Run",
+			              A_ScriptName
 		}
 	}
 
