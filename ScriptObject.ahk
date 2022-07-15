@@ -105,7 +105,7 @@ class ScriptObj {
 		picCtrl.GetPos(,,&pWidth, &pHeight)
 		WinSetTransparent alpha
 
-		splash.Show("w " pWidth " h" pHeight)
+		splash.Show("w" pWidth " h" pHeight)
 
 		loop 255
 		{
@@ -166,6 +166,9 @@ class ScriptObj {
 		
 		if !ScriptObj.isNewVersionAvailable(this.version, upcomingVer)
 			throw Error("No new version available.", A_ThisFunc, 1)
+		
+		if MsgBox("A new version is available, do you want to update?", "New Version", "Y/N") = "No"
+			throw Error("User cancelled update.", A_ThisFunc, 2)
 		
 		; download and install update
 		ScriptObj.InstallNewVersion(dwnFile)
