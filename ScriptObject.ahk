@@ -240,7 +240,7 @@ class ScriptObj {
 		oDir := oShell.NameSpace(zipDir), oZipFile := oShell.NameSpace(zipFile)
 		oDir.CopyHere(oZipFile.Items)
 
-	; { unfoldable variables
+		; { unfoldable variables
 		tmpBatch :=
 		(Ltrim
 			':lock
@@ -274,7 +274,7 @@ class ScriptObj {
 				       0x10 + 0x1000
 			ExitApp'
 		)
-	; }
+		; }
 		
 		FileAppend A_IsCompiled ? tmpBatch : tmpScript, tmpDir "\update.bat"
 		
