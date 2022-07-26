@@ -34,6 +34,21 @@
  * ============================================================================ *
  */
 
+; global script := {base         : script
+;                  ,name          : regexreplace(A_ScriptName, "\.\w+")
+;                  ,version      : "0.1.0"
+;                  ,author       : ""
+;                  ,email        : ""
+;                  ,crtdate      : ""
+;                  ,moddate      : ""
+;                  ,homepagetext : ""
+;                  ,homepagelink : ""
+;                  ,donateLink   : "https://www.paypal.com/donate?hosted_button_id=MBT5HSD9G94N6"
+;                  ,resfolder    : A_ScriptDir "\res"
+;                  ,iconfile     : A_ScriptDir "\res\sct.ico"
+;                  ,configfile   : A_ScriptDir "\settings.ini"
+;                  ,configfolder : A_ScriptDir ""}
+
 /**
  * Class: Script
  * 
