@@ -1,6 +1,6 @@
 #Requires Autohotkey v1.1.33
 ;--
-;@Ahk2Exe-SetVersion     1.0-alpha
+;@Ahk2Exe-SetVersion     1.0-alpha.1
 ;@Ahk2Exe-SetProductName Script Object
 ;@Ahk2Exe-SetDescription Small library to add similar functionality to all scripts
 /**
