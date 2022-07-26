@@ -99,7 +99,7 @@ class Script
 
 		For more information about SemVer and its specs click here: <https://semver.org/>
 	*/
-	Update(vfile, rfile)
+	Update(vfile, rfile, silent:=true)
 	{
 		; Error Codes
 		static ERR_INVALIDVFILE := 1
@@ -129,7 +129,8 @@ class Script
 		catch e
 			throw {code: ERR_NOCONNECT, msg: e.message}
 
-		Progress, 50, 50/100, % "Checking for updates", % "Updating"
+		if !silent
+			Progress, 50, 50/100, % "Checking for updates", % "Updating"
 
 		; Download remote version file
 		http.Open("GET", vfile, true)
@@ -142,12 +143,15 @@ class Script
 											. "The server did not respond."}
 		}
 
-		regexmatch(this.version, "\d+\.\d+\.\d+", loVersion)
-		regexmatch(http.responseText, "\d+\.\d+\.\d+", remVersion)
+		regexmatch(this.version, "\d+\.\d+(\.\d+)?(-.*)?", loVersion)
+		regexmatch(http.responseText, "\d+\.\d+(\.\d+)?(-.*)?", remVersion)
 
-		Progress, 100, 100/100, % "Checking for updates", % "Updating"
-		sleep 500 	; allow progress to update
-		Progress, OFF
+		if !silent
+		{
+			Progress, 100, 100/100, % "Checking for updates", % "Updating"
+			sleep 500 	; allow progress to update
+			Progress, OFF
+		}
 
 		; Make sure SemVer is used
 		if (!loVersion || !remVersion)
