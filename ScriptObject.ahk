@@ -1,15 +1,11 @@
 #Requires Autohotkey v2.0-
-;--
-;@Ahk2Exe-SetVersion     1.0-alpha
-;@Ahk2Exe-SetProductName Script Object
-;@Ahk2Exe-SetDescription Small library to add similar functionality to all scripts
 /**
  * ============================================================================ *
  * @Author           : RaptorX                                                  *
  * @Homepage         :                                                          *
  *                                                                              *
  * @Created          : July 13, 2022                                            *
- * @Modified         :                                                          *
+ * @Modified         : August 01, 2022                                          *
  *                                                                              *
  * @Description      :                                                          *
  * -------------------                                                          *
@@ -35,11 +31,24 @@
  */
 
 /**
-* Class: Script
-*
-* Small library to add similar functionality to all scripts
-*
-*/
+ * Class: ScriptObj
+ *
+ * Small library to add similar functionality to all scripts
+ *
+ * --- ahk
+script := {
+	        base : ScriptObj(),
+	     version : "0.0.0",
+	      author : "",
+	       email : "",
+	     crtdate : "",
+	     moddate : "",
+	homepagetext : "",
+	homepagelink : "",
+	  donateLink : "https://www.paypal.com/donate?hosted_button_id=MBT5HSD9G94N6",
+}
+ * ---
+ */
 class ScriptObj {
 	static testing := true
 
