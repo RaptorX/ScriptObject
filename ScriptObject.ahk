@@ -35,11 +35,24 @@
  */
 
 /**
-* Class: Script
-*
-* Small library to add similar functionality to all scripts
-*
-*/
+ * Class: ScriptObj
+ *
+ * Small library to add similar functionality to all scripts
+ *
+ * --- ahk
+script := {
+	        base : ScriptObj(),
+	     version : "0.0.0",
+	      author : "",
+	       email : "",
+	     crtdate : "",
+	     moddate : "",
+	homepagetext : "",
+	homepagelink : "",
+	  donateLink : "https://www.paypal.com/donate?hosted_button_id=MBT5HSD9G94N6",
+}
+ * ---
+ */
 class ScriptObj {
 	static testing := true
 
