@@ -1,15 +1,11 @@
 #Requires Autohotkey v2.0-
-;--
-;@Ahk2Exe-SetVersion     1.0-alpha
-;@Ahk2Exe-SetProductName Script Object
-;@Ahk2Exe-SetDescription Small library to add similar functionality to all scripts
 /**
  * ============================================================================ *
  * @Author           : RaptorX                                                  *
  * @Homepage         :                                                          *
  *                                                                              *
  * @Created          : July 13, 2022                                            *
- * @Modified         :                                                          *
+ * @Modified         : August 01, 2022                                          *
  *                                                                              *
  * @Description      :                                                          *
  * -------------------                                                          *
