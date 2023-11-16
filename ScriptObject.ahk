@@ -38,14 +38,14 @@
  * --- ahk
 script := {
 	        base : ScriptObj(),
-	     version : "0.0.0",
-	      author : "",
-	       email : "",
-	     crtdate : "",
-	     moddate : "",
-	homepagetext : "",
-	homepagelink : "",
-	  donateLink : "https://www.paypal.com/donate?hosted_button_id=MBT5HSD9G94N6",
+	     version : '0.0.0',
+	      author : '',
+	       email : '',
+	     crtdate : '',
+	     moddate : '',
+	homepagetext : '',
+	homepagelink : '',
+	  donateLink : 'https://www.paypal.com/donate?hosted_button_id=MBT5HSD9G94N6',
 }
  * ---
  */
@@ -53,22 +53,22 @@ class ScriptObj {
 	static testing := true
 
 	name {
-		get => RegExReplace(A_ScriptName, "\..*$")
+		get => RegExReplace(A_ScriptName, '\..*$')
 		set {
-			throw MemberError("This property is read only", A_ThisFunc, "Name")
+			throw MemberError('This property is read only', A_ThisFunc, 'Name')
 		}
 	}
 
 	version {
 		get => this._version
 		set {
-			if Type(Value) = "String" && RegExMatch(Value, "\d+\.\d+\.\d+")
-				return this._version := StrSplit(Value, ".")
+			if Type(Value) = 'String' && RegExMatch(Value, '\d+\.\d+\.\d+')
+				return this._version := StrSplit(Value, '.')
 			else
-				throw ValueError("This property must be a SemVer string.", A_ThisFunc, "Version:" Value)
+				throw ValueError('This property must be a SemVer string.', A_ThisFunc, 'Version:' Value)
 		}
 	}
-	
+
 	/**
 	Function: Autostart(status)
 	This Adds the current script to the autorun section for the current
@@ -77,22 +77,23 @@ class ScriptObj {
 	Parameters:
 	status - Autostart status, It can be either true or false.
 	 */
-	Autostart(status) {
-		if status ~= "[^01]"
-		|| Type(status) != "Integer"
-			throw ValueError("This property can only be true or false",
+	Autostart(status)
+	{
+		if status ~= '[^01]'
+		|| Type(status) != 'Integer'
+			throw ValueError('This property can only be true or false',
 			                 A_ThisFunc, status)
 
 		if status
 		{
 			RegWrite A_ScriptFullPath,
-			         "REG_SZ",
-			         "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Run",
+			         'REG_SZ',
+			         'HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Run',
 			         A_ScriptName
 		}
 		else
 		{
-			try RegDelete "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Run",
+			try RegDelete 'HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Run',
 			              A_ScriptName
 		}
 	}
@@ -106,14 +107,15 @@ class ScriptObj {
 	speed (opt) - how fast the fading animation will be. Higher value is faster.
 	pause (opt) - how long (in seconds) the image will be paused after fully displayed.
 	 */
-	Splash(img, speed:=10, pause:=2) {
+	Splash(img, speed:=10, pause:=2)
+	{
 		alpha := 0
-		splash := Gui("-Caption +LastFound +AlwaysOnTop +Owner")
-		picCtrl := splash.AddPicture("x0 y0", img)
+		splash := Gui('-Caption +LastFound +AlwaysOnTop +Owner')
+		picCtrl := splash.AddPicture('x0 y0', img)
 		picCtrl.GetPos(,,&pWidth, &pHeight)
 		WinSetTransparent alpha
 
-		splash.Show("w" pWidth " h" pHeight)
+		splash.Show('w' pWidth ' h' pHeight)
 
 		loop 255
 		{
@@ -162,137 +164,142 @@ class ScriptObj {
 
 	For more information about SemVer and its specs click here: <https://semver.org/>
 	*/
-	Update(verFile, dwnFile) {
+	Update(verFile, dwnFile)
+	{
 		if !this.version
-			throw MemberError("You need to set the version property of the script.", A_ThisFunc)
-		
-		if !ScriptObj.isConnectedToInternet()
-			throw Error("No internet connection.", A_ThisFunc)
-		
+			throw MemberError('You need to set the version property of the script.', A_ThisFunc)
+
+		if !isConnectedToInternet()
+			throw Error('No internet connection.', A_ThisFunc)
+
 		; compare versions
-		upcomingVer := ScriptObj.GetUpcomingVersion(verFile)
-		
-		if !ScriptObj.isNewVersionAvailable(this.version, upcomingVer)
-			throw Error("No new version available.", A_ThisFunc, 1)
-		
-		if MsgBox("A new version is available, do you want to update?", "New Version", "Y/N") = "No"
-			throw Error("User cancelled update.", A_ThisFunc, 2)
-		
+		upcomingVer := GetUpcomingVersion(verFile)
+
+		if !isNewVersionAvailable(this.version, upcomingVer)
+			throw Error('No new version available.', A_ThisFunc, 1)
+
+		if MsgBox('A new version is available, do you want to update?', 'New Version', 'Y/N') = 'No'
+			throw Error('User cancelled update.', A_ThisFunc, 2)
+
 		; download and install update
-		ScriptObj.InstallNewVersion(dwnFile)
-	}
+		InstallNewVersion(dwnFile)
+		return
 
-	static isConnectedToInternet() {
-		static VARIANT_TRUE  := -1
-		static VARIANT_FALSE := 0
+		isConnectedToInternet()
+		{
+			static VARIANT_TRUE  := -1
+			static VARIANT_FALSE := 0
 
-		http := ComObject("WinHttp.WinHttpRequest.5.1")
+			http := ComObject('WinHttp.WinHttpRequest.5.1')
 
-		http.Open("GET", "https://google.com", VARIANT_TRUE)
-		http.Send()
+			http.Open('GET', 'https://google.com', VARIANT_TRUE)
+			http.Send()
 
-		; WaitForResponse throws if cant resolve the name of the server
-		try http.WaitForResponse()
-		catch
+			; WaitForResponse throws if cant resolve the name of the server
+			try http.WaitForResponse()
+			catch
+				return false
+
+			return http.responseText
+		}
+
+		isNewVersionAvailable(current, upcoming)
+		{
+			if Type(current) != 'Array'
+			|| Type(upcoming) != 'Array'
+				throw ValueError('Invalid value. This function only accepts arrays.',
+						A_ThisFunc, 'current: ' Type(current) ' / upcoming: ' Type(upcoming))
+
+			loop 3
+				if (upcoming[A_Index] > current[A_Index])
+					return true
 			return false
+		}
 
-		return http.responseText
-	}
+		GetUpcomingVersion(verFile)
+		{
+			static VARIANT_TRUE  := -1
+			static VARIANT_FALSE := 0
 
-	static isNewVersionAvailable(current, upcoming) {
-		if Type(current) != "Array"
-		|| Type(upcoming) != "Array"
-			throw ValueError("Invalid value. This function only accepts arrays.",
-			                 A_ThisFunc, "current: " Type(current) " / upcoming: " Type(upcoming))
+			verFile := !(verFile ~= '^https?:\/\/') ? 'https://' verFile : verFile
+			http := ComObject('WinHttp.WinHttpRequest.5.1')
+			http.Open('GET', verFile, VARIANT_TRUE)
+			http.Send(), http.WaitForResponse(5)
 
-		loop 3
-			if (upcoming[A_Index] > current[A_Index])
-				return true
-		return false
-	}
+			return StrSplit(http.responseText, '.')
+		}
 
-	static GetUpcomingVersion(verFile) {
-		static VARIANT_TRUE  := -1
-		static VARIANT_FALSE := 0
+		InstallNewVersion(dwnFile)
+		{
+			if !InStr(dwnFile, '.zip')
+				throw ValueError('The file to download must be a Zip File')
 
-		verFile := !(verFile ~= "^https?:\/\/") ? "https://" verFile : verFile
-		http := ComObject("WinHttp.WinHttpRequest.5.1")
-		http.Open("GET", verFile, VARIANT_TRUE)
-		http.Send(), http.WaitForResponse(5)
+			cleanName := A_Temp '\' RegExReplace(A_ScriptName, '\..*$')
+			items := [tmpDir  :=cleanName,
+			          zipDir  :=cleanName '\uzip',
+			          lockFile:=cleanName '-lockfile',
+			          zipFile :=cleanName '-update.zip']
 
-		return StrSplit(http.responseText, '.')
-	}
+			; cleanup
+			for item in items
+				if FileExist(item)
+					(A_Index > 2 ?  FileDelete(item) : DirDelete(item, true))
 
-	static InstallNewVersion(dwnFile) {
-		if !InStr(dwnFile, ".zip")
-			throw ValueError("The file to download must be a Zip File")
-		
-		cleanName := A_Temp "\" RegExReplace(A_ScriptName, "\..*$")
-		items := [tmpDir  :=cleanName,
-		          zipDir  :=cleanName "\uzip",
-		          lockFile:=cleanName "-lockfile",
-		          zipFile :=cleanName "-update.zip"]
-		
-		; cleanup
-		for item in items
-			if FileExist(item)
-				(A_Index > 2 ?  FileDelete(item) : DirDelete(item, true))
-		
-		DirCreate tmpDir
-		DirCreate zipDir
-		
-		FileAppend A_Now, lockFile
-		Download dwnFile, zipFile
+			DirCreate tmpDir
+			DirCreate zipDir
 
-		; Extract zip file to temporal folder
-		oShell := ComObject("Shell.Application")
-		oDir := oShell.NameSpace(zipDir), oZipFile := oShell.NameSpace(zipFile)
-		oDir.CopyHere(oZipFile.Items)
+			FileAppend A_Now, lockFile
+			Download dwnFile, zipFile
 
-		; { unfoldable variables
-		tmpBatch :=
-		(Ltrim
-			':lock
-			timeout /t 2
-			if not exist "' lockFile '" goto continue
-			goto lock
-			:continue
+			; Extract zip file to temporal folder
+			oShell := ComObject('Shell.Application')
+			oDir := oShell.NameSpace(zipDir), oZipFile := oShell.NameSpace(zipFile)
+			oDir.CopyHere(oZipFile.Items)
 
-			xcopy "' zipDir '\*.*" "' A_ScriptDir '\" /E /C /I /Q /R /K /Y
-			if exist "' A_ScriptFullPath '" cmd /C "' A_ScriptFullPath '"
+			; { unfoldable variables
+			tmpBatch :=
+			(Ltrim
+				':lock
+				timeout /t 2
+				if not exist "' lockFile '" goto continue
+				goto lock
+				:continue
 
-			cmd /C "rmdir "' tmpDir '" /S /Q"
-			exit'
-		)
-		tmpScript :=
-		(Ltrim
-			'while (FileExist("' lockFile '"))
-				sleep 10
+				xcopy "' zipDir '\*.*" "' A_ScriptDir '\" /E /C /I /Q /R /K /Y
+				if exist "' A_ScriptFullPath '" cmd /C "' A_ScriptFullPath '"
 
-			DirCopy "' zipDir '\", "' A_ScriptDir '", true
+				cmd /C "rmdir "' tmpDir '" /S /Q"
+				exit'
+			)
+			tmpScript :=
+			(Ltrim
+				'while (FileExist("' lockFile '"))
+					sleep 10
 
-			if MsgBox("Do you want to load the new script?", "Update Successful", "Y/N") = "No"
-				ExitApp
+				DirCopy "' zipDir '\", "' A_ScriptDir '", true
+
+				if MsgBox("Do you want to load the new script?", "Update Successful", "Y/N") = "No"
+					ExitApp
+				
+				if (FileExist("' A_ScriptFullPath '"))
+					Run "' A_ScriptFullPath '"
+				else
+					MsgBox "There was an error while running the updated version.``n" 
+					. "Try to run the program manually.", 
+					"Update Error", 
+					0x10 + 0x1000
+				ExitApp'
+			)
+			; }
 			
-			if (FileExist("' A_ScriptFullPath '"))
-				Run "' A_ScriptFullPath '"
+			FileAppend A_IsCompiled ? tmpBatch : tmpScript, tmpDir "\update.bat"
+			
+			if A_IsCompiled
+				Run A_ComSpec ' /c "' tmpDir '\update.bat"',, "Hide"
 			else
-				MsgBox "There was an error while running the updated version.``n" 
-				     . "Try to run the program manually.", 
-				       "Update Error", 
-				       0x10 + 0x1000
-			ExitApp'
-		)
-		; }
-		
-		FileAppend A_IsCompiled ? tmpBatch : tmpScript, tmpDir "\update.bat"
-		
-		if A_IsCompiled
-			Run A_ComSpec ' /c "' tmpDir '\update.bat"',, "Hide"
-		else
-			Run '"' A_AhkPath '" "' tmpDir '\update.bat"'
-		
-		FileDelete lockFile
+				Run '"' A_AhkPath '" "' tmpDir '\update.bat"'
+			
+			FileDelete lockFile
 
 		if !ScriptObj.testing
 			ExitApp
