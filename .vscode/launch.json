@@ -5,12 +5,18 @@
 	"version": "0.2.0",
 	"configurations": [
 		{
-			"type": "ahk",
+			"name": "AutoHotkey Debug (Advanced Configuration)",
+			"type": "autohotkey",
 			"request": "launch",
-			"name": "AutoHotkey Debugger",
 			"program": "${workspaceFolder}\\tests\\Unit Tests.ahk",
-			"stopOnEntry": true,
-			"runtime": "C:\\Program Files\\Autohotkey\\v2\\AutoHotkey32.exe"
+			"args": [],
+			"port": "9002-9010",
+			"variableCategories": "recommend",
+			"useDebugDirective": true,
+			"useAutoJumpToError": true,
+			"useOutputDebug": {
+				"useTrailingLinebreak": true
+			}
 		}
 	]
 }
