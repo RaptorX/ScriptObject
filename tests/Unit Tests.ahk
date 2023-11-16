@@ -1,19 +1,23 @@
 #Requires Autohotkey v2.0-
 
-#Include <Yunit\Yunit>
-#Include <Yunit\Window>
-#Include <ScriptObject\ScriptObject>
+#Include <v2\Yunit\Yunit>
+#Include <v2\Yunit\Window>
+#Include <v2\ScriptObject\ScriptObject>
 
 Yunit.Use(YunitWindow).Test(ScriptObjectTest)
 
-class ScriptObjectTest {
-	class PropertyTests {
-		test1_name() {
+class ScriptObjectTest
+{
+	class PropertyTests
+	{
+		test1_name()
+		{
 			script := ScriptObj()
 			Yunit.Assert(script.name == "Unit Tests")
 		}
 
-		test2_version() {
+		test2_version()
+		{
 			script := ScriptObj()
 			script.version := "1.30.0"
 			Yunit.Assert(Type(script.version) = "Array")
@@ -21,10 +25,13 @@ class ScriptObjectTest {
 		}
 	}
 
-	class MethodTests {
+	class MethodTests
+	{
 
-		class Splash {
-			test_Splash() {
+		class Splash
+		{
+			test_Splash()
+			{
 				if ScriptObj.testing
 					return
 
@@ -33,8 +40,10 @@ class ScriptObjectTest {
 			}
 		}
 
-		class AutoStart {
-			test1_SetAutoStart() {
+		class AutoStart
+		{
+			test1_SetAutoStart()
+			{
 				script := ScriptObj()
 				script.Autostart(true)
 
@@ -42,7 +51,8 @@ class ScriptObjectTest {
 				Yunit.Assert(cVal == A_ScriptFullPath)
 			}
 
-			test2_RemoveAutoStart() {
+			test2_RemoveAutoStart()
+			{
 				script := ScriptObj()
 				script.Autostart(false)
 
@@ -55,7 +65,8 @@ class ScriptObjectTest {
 				Yunit.Assert(false)
 			}
 
-			test3_InvalidValueString() {
+			test3_InvalidValueString()
+			{
 				script := ScriptObj()
 				try script.Autostart("val")
 				catch
@@ -64,7 +75,8 @@ class ScriptObjectTest {
 				Yunit.Assert(false)
 			}
 
-			test4_InvalidValueNot1Or0() {
+			test4_InvalidValueNot1Or0()
+			{
 				script := ScriptObj()
 				try script.Autostart(3)
 				catch
@@ -73,7 +85,8 @@ class ScriptObjectTest {
 				Yunit.Assert(false)
 			}
 
-			test5_InvalidValueBlank() {
+			test5_InvalidValueBlank()
+			{
 				script := ScriptObj()
 				try script.Autostart("")
 				catch
@@ -82,7 +95,8 @@ class ScriptObjectTest {
 				Yunit.Assert(false)
 			}
 
-			test6_InvalidValueObject() {
+			test6_InvalidValueObject()
+			{
 				script := ScriptObj()
 				try script.Autostart({})
 				catch
@@ -91,7 +105,8 @@ class ScriptObjectTest {
 				Yunit.Assert(false)
 			}
 
-			test7_InvalidValueArray() {
+			test7_InvalidValueArray()
+			{
 				script := ScriptObj()
 				try script.Autostart([])
 				catch
@@ -100,7 +115,8 @@ class ScriptObjectTest {
 				Yunit.Assert(false)
 			}
 
-			test7_InvalidValueMap() {
+			test7_InvalidValueMap()
+			{
 				script := ScriptObj()
 				try script.Autostart(Map())
 				catch
@@ -110,80 +126,30 @@ class ScriptObjectTest {
 			}
 		}
 
-		class Update {
-			test1_CheckConnection() {
-				res := ScriptObj.isConnectedToInternet()
-				Yunit.Assert(InStr(res, "<!doctype html>"))
+		class Update
+		{
+			end()
+			{
+				try FileDelete "WindowSnipping.ahk"
+				for dir in ["lib", "res"]
+					try DirDelete dir, true
 			}
 
-			test2_GetUpcomingVersion() {
-				verFile := "https://raw.githubusercontent.com/RaptorX/WindowSnipping/master/ver"
-
-				upcomingVer := ScriptObj.GetUpcomingVersion(verFile)
-				for vNum in ["1","32","0"]
-					if upcomingVer[A_Index] != vNum
-						Yunit.Assert(false)
-			}
-
-			test3_CheckNewVersionTrue() {
+			test1_UpdateTrue()
+			{
 				script := ScriptObj()
 				script.version := "1.31.0"
 
-				verFile := "https://raw.githubusercontent.com/RaptorX/WindowSnipping/master/ver"
-				upcomingVer := ScriptObj.GetUpcomingVersion(verFile)
-				if ScriptObj.isNewVersionAvailable(script.version, upcomingVer)
-					Yunit.Assert(true)
-				else
-					Yunit.Assert(false)
-
-			}
-
-			test4_CheckNewVersionFalse() {
-				script := ScriptObj()
-				script.version := "1.32.0"
-
-				verFile := "https://raw.githubusercontent.com/RaptorX/WindowSnipping/master/ver"
-				upcomingVer := ScriptObj.GetUpcomingVersion(verFile)
-				if !ScriptObj.isNewVersionAvailable(script.version, upcomingVer)
-					Yunit.Assert(true)
-				else
-					Yunit.Assert(false)
-
-			}
-
-			test5_InstallNewVersion() {
-				if FileExist("WindowSnipping.ahk")
-					return ScriptObjectTest.MethodTests.Update.CleanUp()
-
-				ScriptObj.InstallNewVersion("https://github.com/RaptorX/WindowSnipping/releases/download/latest/WindowSnipping.zip")
+				script.Update(
+					"https://raw.githubusercontent.com/RaptorX/WindowSnipping/master/ver",
+					"https://github.com/RaptorX/WindowSnipping/releases/download/latest/WindowSnipping.zip")
 
 				Sleep 1000 ; external update script takes a moment to copy the files
 				Yunit.Assert(FileExist("WindowSnipping.ahk"))
-
-				ScriptObjectTest.MethodTests.Update.CleanUp()
 			}
 
-			test6_UpdateTrue() {
-				if FileExist("WindowSnipping.ahk")
-					return ScriptObjectTest.MethodTests.Update.CleanUp()
-
-				script := ScriptObj()
-				script.version := "1.31.0"
-
-				script.Update("https://raw.githubusercontent.com/RaptorX/WindowSnipping/master/ver",
-				              "https://github.com/RaptorX/WindowSnipping/releases/download/latest/WindowSnipping.zip")
-
-				Sleep 1000 ; external update script takes a moment to copy the files
-				Yunit.Assert(FileExist("WindowSnipping.ahk"))
-
-				ScriptObjectTest.MethodTests.Update.CleanUp()
-
-			}
-			
-			test7_UpdateFalse() {
-				if FileExist("WindowSnipping.ahk")
-					return ScriptObjectTest.MethodTests.Update.CleanUp()
-
+			test2_UpdateFalse()
+			{
 				script := ScriptObj()
 				script.version := "1.32.0"
 
