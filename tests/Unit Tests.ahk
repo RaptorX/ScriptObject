@@ -159,11 +159,20 @@ class ScriptObjectTest
 				catch
 					Yunit.Assert(true)
 			}
+		}
 
-			static CleanUp() {
-				FileDelete "WindowSnipping.ahk"
-				for dir in ["lib", "res"]
-					DirDelete dir, true
+		class Licensing
+		{
+			test_show_the_gui()
+			{
+				static WS_VISIBLE := 0x10000000
+				script := ScriptObj()
+				ScriptObj.GetLicense()
+
+				Yunit.Assert(WinExist('License'), 'the window was not created')
+				styles := WinGetStyle('License')
+				Yunit.Assert(styles & WS_VISIBLE, 'the window is not visible')
+				WinClose('License')
 			}
 		}
 	}

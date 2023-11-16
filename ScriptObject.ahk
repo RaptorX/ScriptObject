@@ -52,6 +52,10 @@ script := {
 class ScriptObj {
 	static testing := true
 
+	static eddID    := 0
+	static systemID := ''
+	static license  := ''
+
 	name {
 		get => RegExReplace(A_ScriptName, '\..*$')
 		set {
@@ -301,7 +305,115 @@ class ScriptObj {
 			
 			FileDelete lockFile
 
-		if !ScriptObj.testing
-			ExitApp
+			if !ScriptObj.testing
+				ExitApp
+		}
+	}
+
+	static GetLicense()
+	{
+		static cleanName := RegexReplace(A_ScriptName, '\..*$')
+		static errMsg :=
+		(
+			'Seems like there is no license activated on this computer.
+			Do you have a license that you want to activate now?'
+		)
+
+		ScriptObj.systemID := ScriptObj.GetSystemID()
+		if lic_number :=  RegRead('HKCU\SOFTWARE\' cleanName, 'lic_number', false)
+			return ScriptObj.license := lic_number
+		
+		if Msgbox(errMsg, 'No license', 'IconX Y/N') = 'No'
+			Cancel()
+
+		license := Gui('', 'License')
+		license.AddText('w160', 'Paste the License Code here:')
+		license.AddEdit('w160 vLicenseNumber')
+		license.AddButton('w75 vTest', 'Save').OnEvent('Click', Save)
+		license.AddButton('w75 x+10', 'Cancel').OnEvent('Click', Cancel)
+		license.Show()
+		return
+
+		Save(*)
+		{
+			LicenseNumber := license['LicenseNumber'].value
+			if ScriptObj.IsLicenceValid(LicenseNumber)
+			{
+				SaveLicense(LicenseNumber)
+				MsgBox 'The license was applied correctly!`n'
+				     . 'The program will start now.',
+				       'License Saved', 'Iconi'
+				Reload
+			}
+			else
+			{
+				MsgBox 'The license you entered is invalid and cannot be activated.', 'Invalid License', 'IconX'
+				ExitApp 1
+			}
+		}
+
+		Cancel(*)
+		{
+			MsgBox 'This program cannot run without a license.', 'Unable to Run', 'IconX'
+			ExitApp 1
+		}
+
+		SaveLicense(LicenseNumber)
+		{
+			key := 'HKCU\SOFTWARE\' RegexReplace(A_ScriptName, '\..*$')
+			RegWrite ScriptObj.license := LicenseNumber, 'REG_SZ', key, 'lic_number'
+		}
+
+	}
+
+	static IsLicenceValid(license)
+	{
+		res := ScriptObj.EDDRequest('check_license', ScriptObj.eddID, license)
+
+		if InStr(res, '"license":"inactive"')
+			res := ScriptObj.EDDRequest('activate_license', ScriptObj.eddID, license)
+
+		return InStr(res, '"license":"valid"')
+	}
+
+	static EDDRequest(Action, item_id, license)
+	{
+		static url_template := 'https://the-Automator.com/?edd_action={1}&item_id={2}&license={3}&url={4}'
+		URL := Format(url_template, Action, item_id, license, this.systemID)
+
+		http := ComObject('WinHttp.WinHttpRequest.5.1')
+		http.Open('GET', URL)
+		http.SetRequestHeader('Pragma', 'no-cache')
+		http.SetRequestHeader('Cache-Control', 'no-cache, no-store')
+		http.SetRequestHeader('User-Agent', 'Mozilla/4.0 (compatible; Win32)')
+
+		http.Send()
+		return http.responseText
+	}
+
+	static GetSystemID()
+	{
+		wmi := ComObjGet('winmgmts:{impersonationLevel=impersonate}!\\' A_ComputerName '\root\cimv2')
+		(wmi.ExecQuery('Select * from Win32_BaseBoard')._newEnum)(&Computer)
+		id := Computer.SerialNumber
+
+		id .= ' ' RegRead('HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion', 'ProductId')
+		return MD5(id)
+
+		MD5(str, uppercase:=true) ; by SKAN | rewritten by jNizM
+		{
+			static MD5_DIGEST_LENGTH := 16
+			hModule := DllCall('LoadLibrary', 'Str', 'advapi32.dll', 'Ptr')
+
+			MD5_CTX := Buffer(104, 0)
+			DllCall('advapi32\MD5Init', 'Ptr', MD5_CTX)
+			DllCall('advapi32\MD5Update', 'Ptr', MD5_CTX, 'AStr', str, 'UInt', StrLen(str))
+			DllCall('advapi32\MD5Final', 'Ptr', MD5_CTX)
+			DllCall('FreeLibrary', 'Ptr', hModule)
+			loop MD5_DIGEST_LENGTH
+				o .= Format('{:02' (uppercase ? 'X' : 'x') '}', NumGet(MD5_CTX, 87 + A_Index, 'UChar'))
+
+			return o
+		}
 	}
 }
