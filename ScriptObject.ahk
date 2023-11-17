@@ -183,11 +183,11 @@ class ScriptObj {
 			throw Error('No new version available.', A_ThisFunc, 1)
 
 		if MsgBox('A new version is available, do you want to update?', 'New Version', 'Y/N') = 'No'
-			throw Error('User cancelled update.', A_ThisFunc, 2)
+			return false
 
 		; download and install update
 		InstallNewVersion(dwnFile)
-		return
+		return true
 
 		isConnectedToInternet()
 		{
