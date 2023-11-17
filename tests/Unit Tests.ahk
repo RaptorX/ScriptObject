@@ -160,9 +160,31 @@ class ScriptObjectTest
 				Yunit.Assert(updated = false && !FileExist("WindowSnipping.ahk"))
 			}
 		}
+
+		class About
+		{
+
+			test1_About()
+			{
+				static WS_VISIBLE := 0x10000000
+				script := {
+				        base : ScriptObj(),
+				     version : '0.0.0',
+				      author : 'RaptorX',
+				       email : 'teest@gmail.com',
+				     crtdate : '123456798',
+				     moddate : '123456789',
+				homepagetext : '',
+				homepagelink : '',
+				  donateLink : 'https://www.paypal.com/donate?hosted_button_id=MBT5HSD9G94N6',
+				}
+				script.About()
+				Yunit.Assert(WinExist('About'), 'the window was not created')
+				styles := WinGetStyle('About')
+				Yunit.Assert(styles & WS_VISIBLE, 'the window is not visible')
+				WinClose('About')
 			}
 		}
-
 		class Licensing
 		{
 			test_show_the_gui()
