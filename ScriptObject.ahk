@@ -189,105 +189,6 @@ class ScriptObj {
 		InstallNewVersion(dwnFile)
 		return
 
-	/**
-		Function: About
-		Shows a quick HTML Window based on the object's variable information
-
-		Parameters:
-		scriptName   (opt) - Name of the script which will be
-		                     shown as the title of the window and the main header
-		version      (opt) - Script Version in SimVer format, a "v"
-		                     will be added automatically to this value
-		author       (opt) - Name of the author of the script
-		homepagetext (opt) - Display text for the script website
-		homepagelink (opt) - Href link to that points to the scripts
-		                     website (for pretty links and utm campaing codes)
-		donateLink   (opt) - Link to a donation site
-		email        (opt) - Developer email
-
-		Notes:
-		The function will try to infer the paramters if they are blank by checking
-		the class variables if provided. This allows you to set all information once
-		when instatiating the class, and the about GUI will be filled out automatically.
-	*/
-	About(scriptName?, version?, author?, homepagetext?, homepagelink?, donateLink?, email?)
-	{
-		static doc := ''
-
-		scriptName := scriptName ?? this.name
-		version := version ?? this.version
-		author := author ?? this.author
-		homepagetext := homepagetext ?? RegExReplace(this.homepagetext, "http(s)?:\/\/")
-		homepagelink := homepagelink ?? RegExReplace(this.homepagelink, "http(s)?:\/\/")
-		donateLink := donateLink ?? RegExReplace(this.donateLink, "http(s)?:\/\/")
-		email := email ?? this.email
-
-		if (donateLink)
-		{
-			donateSection :=
-			(
-				'<div class="donate">
-					<p>If you like this tool please consider <a href="https://' donateLink '">donating</a>.</p>
-				</div>
-				<hr>'
-			)
-		}
-		else
-			donateSection := ''
-
-		html :=
-		(
-			'<!DOCTYPE html>
-			<html lang="en" dir="ltr">
-				<head>
-					<meta charset="utf-8">
-					<meta http-equiv="X-UA-Compatible" content="IE=edge">
-					<style media="screen">
-						.top {
-							text-align:center;
-						}
-						.top h2 {
-							color:#2274A5;
-							margin-bottom: 5px;
-						}
-						.donate {
-							color:#E83F6F;
-							text-align:center;
-							font-weight:bold;
-							font-size:small;
-							margin: 20px;
-						}
-						p {
-							margin: 0px;
-						}
-					</style>
-				</head>
-				<body>
-					<div class="top">
-						<h2>' scriptName '</h2>
-						<p>v' version '</p>
-						<hr>
-						<p>' author '</p>
-						<p><a href="https://' homepagelink '" target="_blank">' homepagetext '</a></p>
-					</div>
-					' donateSection '
-				</body>
-			</html>'
-		)
-
-		btnxPos := 300/2 - 75/2
-		axHight := donateLink ? 16 : 12
-
-		aboutScript := Gui('+AlwaysOnTop +ToolWindow', "About " this.name)
-		aboutScript.MarginX := aboutScript.MarginY :=  0
-		aboutScript.BackColor := 'white'
-		doc := aboutScript.AddActiveX('w300 r' axHight, 'HTMLFile').value
-		aboutScript.AddButton('w75 x' btnxPos, "Close").OnEvent('Click', (*)=>aboutScript.Destroy())
-		doc.Write(html)
-		doc.Close()
-		aboutScript.Show()
-	}
-
 		isConnectedToInternet()
 		{
 			static VARIANT_TRUE  := -1
@@ -407,6 +308,105 @@ class ScriptObj {
 			if !ScriptObj.testing
 				ExitApp
 		}
+	}
+
+	/**
+		Function: About
+		Shows a quick HTML Window based on the object's variable information
+
+		Parameters:
+		scriptName   (opt) - Name of the script which will be
+		                     shown as the title of the window and the main header
+		version      (opt) - Script Version in SimVer format, a "v"
+		                     will be added automatically to this value
+		author       (opt) - Name of the author of the script
+		homepagetext (opt) - Display text for the script website
+		homepagelink (opt) - Href link to that points to the scripts
+		                     website (for pretty links and utm campaing codes)
+		donateLink   (opt) - Link to a donation site
+		email        (opt) - Developer email
+
+		Notes:
+		The function will try to infer the paramters if they are blank by checking
+		the class variables if provided. This allows you to set all information once
+		when instatiating the class, and the about GUI will be filled out automatically.
+	*/
+	About(scriptName?, version?, author?, homepagetext?, homepagelink?, donateLink?, email?)
+	{
+		static doc := ''
+
+		scriptName := scriptName ?? this.name
+		version := version ?? this.version
+		author := author ?? this.author
+		homepagetext := homepagetext ?? RegExReplace(this.homepagetext, "http(s)?:\/\/")
+		homepagelink := homepagelink ?? RegExReplace(this.homepagelink, "http(s)?:\/\/")
+		donateLink := donateLink ?? RegExReplace(this.donateLink, "http(s)?:\/\/")
+		email := email ?? this.email
+
+		if (donateLink)
+		{
+			donateSection :=
+			(
+				'<div class="donate">
+					<p>If you like this tool please consider <a href="https://' donateLink '">donating</a>.</p>
+				</div>
+				<hr>'
+			)
+		}
+		else
+			donateSection := ''
+
+		html :=
+		(
+			'<!DOCTYPE html>
+			<html lang="en" dir="ltr">
+				<head>
+					<meta charset="utf-8">
+					<meta http-equiv="X-UA-Compatible" content="IE=edge">
+					<style media="screen">
+						.top {
+							text-align:center;
+						}
+						.top h2 {
+							color:#2274A5;
+							margin-bottom: 5px;
+						}
+						.donate {
+							color:#E83F6F;
+							text-align:center;
+							font-weight:bold;
+							font-size:small;
+							margin: 20px;
+						}
+						p {
+							margin: 0px;
+						}
+					</style>
+				</head>
+				<body>
+					<div class="top">
+						<h2>' scriptName '</h2>
+						<p>v' version '</p>
+						<hr>
+						<p>' author '</p>
+						<p><a href="https://' homepagelink '" target="_blank">' homepagetext '</a></p>
+					</div>
+					' donateSection '
+				</body>
+			</html>'
+		)
+
+		btnxPos := 300/2 - 75/2
+		axHight := donateLink ? 16 : 12
+
+		aboutScript := Gui('+AlwaysOnTop +ToolWindow', "About " this.name)
+		aboutScript.MarginX := aboutScript.MarginY :=  0
+		aboutScript.BackColor := 'white'
+		doc := aboutScript.AddActiveX('w300 r' axHight, 'HTMLFile').value
+		aboutScript.AddButton('w75 x' btnxPos, "Close").OnEvent('Click', (*)=>aboutScript.Destroy())
+		doc.Write(html)
+		doc.Close()
+		aboutScript.Show()
 	}
 
 	static GetLicense()
