@@ -27,7 +27,6 @@ class ScriptObjectTest
 
 	class MethodTests
 	{
-
 		class Splash
 		{
 			test_Splash()
@@ -140,12 +139,13 @@ class ScriptObjectTest
 				script := ScriptObj()
 				script.version := "1.31.0"
 
-				script.Update(
+				updated := script.Update(
 					"https://raw.githubusercontent.com/RaptorX/WindowSnipping/master/ver",
-					"https://github.com/RaptorX/WindowSnipping/releases/download/latest/WindowSnipping.zip")
+					"https://github.com/RaptorX/WindowSnipping/releases/download/latest/WindowSnipping.zip"
+				)
 
 				Sleep 1000 ; external update script takes a moment to copy the files
-				Yunit.Assert(FileExist("WindowSnipping.ahk"))
+				Yunit.Assert(updated && FileExist("WindowSnipping.ahk"))
 			}
 
 			test2_UpdateFalse()
@@ -153,11 +153,13 @@ class ScriptObjectTest
 				script := ScriptObj()
 				script.version := "1.32.0"
 
-				try script.Update("https://raw.githubusercontent.com/RaptorX/WindowSnipping/master/ver",
-				              "https://github.com/RaptorX/WindowSnipping/releases/download/latest/WindowSnipping.zip")
-
-				catch
-					Yunit.Assert(true)
+				updated := script.Update(
+					"https://raw.githubusercontent.com/RaptorX/WindowSnipping/master/ver",
+					"https://github.com/RaptorX/WindowSnipping/releases/download/latest/WindowSnipping.zip"
+				)
+				Yunit.Assert(updated = false && !FileExist("WindowSnipping.ahk"))
+			}
+		}
 			}
 		}
 
