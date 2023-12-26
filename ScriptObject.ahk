@@ -177,9 +177,9 @@ class ScriptObj {
 			throw Error('No internet connection.', A_ThisFunc)
 
 		; compare versions
-		upcomingVer := GetUpcomingVersion(verFile)
+		upcomingVer := ScriptObj.GetUpcomingVersion(verFile)
 
-		if !isNewVersionAvailable(this.version, upcomingVer)
+		if !this.isNewVersionAvailable(this.version, upcomingVer)
 			throw Error('No new version available.', A_ThisFunc, 1)
 
 		if MsgBox('A new version is available, do you want to update?', 'New Version', 'Y/N') = 'No'
@@ -205,32 +205,6 @@ class ScriptObj {
 				return false
 
 			return http.responseText
-		}
-
-		isNewVersionAvailable(current, upcoming)
-		{
-			if Type(current) != 'Array'
-			|| Type(upcoming) != 'Array'
-				throw ValueError('Invalid value. This function only accepts arrays.',
-						A_ThisFunc, 'current: ' Type(current) ' / upcoming: ' Type(upcoming))
-
-			loop 3
-				if (upcoming[A_Index] > current[A_Index])
-					return true
-			return false
-		}
-
-		GetUpcomingVersion(verFile)
-		{
-			static VARIANT_TRUE  := -1
-			static VARIANT_FALSE := 0
-
-			verFile := !(verFile ~= '^https?:\/\/') ? 'https://' verFile : verFile
-			http := ComObject('WinHttp.WinHttpRequest.5.1')
-			http.Open('GET', verFile, VARIANT_TRUE)
-			http.Send(), http.WaitForResponse(5)
-
-			return StrSplit(http.responseText, '.')
 		}
 
 		InstallNewVersion(dwnFile)
@@ -308,6 +282,32 @@ class ScriptObj {
 			if !ScriptObj.testing
 				ExitApp
 		}
+	}
+
+	static GetUpcomingVersion(verFile)
+	{
+		static VARIANT_TRUE  := -1
+		static VARIANT_FALSE := 0
+
+		verFile := !(verFile ~= '^https?:\/\/') ? 'https://' verFile : verFile
+		http := ComObject('WinHttp.WinHttpRequest.5.1')
+		http.Open('GET', verFile, VARIANT_TRUE)
+		http.Send(), http.WaitForResponse(5)
+
+		return StrSplit(http.responseText, '.')
+	}
+
+	static isNewVersionAvailable(current, upcoming)
+	{
+		if Type(current) != 'Array'
+		|| Type(upcoming) != 'Array'
+			throw ValueError('Invalid value. This function only accepts arrays.',
+					A_ThisFunc, 'current: ' Type(current) ' / upcoming: ' Type(upcoming))
+
+		loop 3
+			if (upcoming[A_Index] > current[A_Index])
+				return true
+		return false
 	}
 
 	/**
