@@ -400,7 +400,7 @@ class ScriptObj {
 		axHight := donateLink ? 16 : 12
 
 		aboutScript := Gui('+AlwaysOnTop +ToolWindow', "About " this.name)
-		aboutScript.MarginX := aboutScript.MarginY :=  0
+		aboutScript.MarginX := 0
 		aboutScript.BackColor := 'white'
 		doc := aboutScript.AddActiveX('w300 r' axHight, 'HTMLFile').value
 		aboutScript.AddButton('w75 x' btnxPos, "Close").OnEvent('Click', (*)=>aboutScript.Destroy())
