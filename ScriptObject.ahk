@@ -57,7 +57,7 @@ class ScriptObj {
 	static license  := ''
 
 	name {
-		get => RegExReplace(A_ScriptName, '\..*$')
+		get => A_ScriptName
 		set {
 			throw MemberError('This property is read only', A_ThisFunc, 'Name')
 		}
