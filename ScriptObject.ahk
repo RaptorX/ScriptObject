@@ -496,6 +496,7 @@ class ScriptObj {
 		(wmi.ExecQuery('Select * from Win32_BaseBoard')._newEnum)(&Computer)
 		id := Computer.SerialNumber
 
+		SetRegView 64
 		id .= ' ' RegRead('HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion', 'ProductId')
 		return MD5(id)
 
