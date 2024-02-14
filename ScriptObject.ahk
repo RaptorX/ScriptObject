@@ -419,7 +419,8 @@ class ScriptObj {
 		)
 
 		ScriptObj.systemID := ScriptObj.GetSystemID()
-		if lic_number :=  RegRead('HKCU\SOFTWARE\' cleanName, 'lic_number', false)
+		if (lic_number := RegRead('HKCU\SOFTWARE\' cleanName, 'lic_number', false))
+		&& ScriptObj.IsLicenceValid(lic_number)
 			return ScriptObj.license := lic_number
 
 		if Msgbox(errMsg, 'No license', 'IconX Y/N') = 'No'
@@ -435,7 +436,7 @@ class ScriptObj {
 
 		Save(*)
 		{
-			LicenseNumber := license['LicenseNumber'].value
+			LicenseNumber := Trim(license['LicenseNumber'].value)
 			if ScriptObj.IsLicenceValid(LicenseNumber)
 			{
 				SaveLicense(LicenseNumber)
@@ -469,8 +470,12 @@ class ScriptObj {
 	{
 		res := ScriptObj.EDDRequest('check_license', ScriptObj.eddID, license)
 
-		if InStr(res, '"license":"inactive"')
+		if (InStr(res, '"license":"inactive"')
+		|| InStr(res, '"license":"site_inactive"'))
+		&& !InStr(res, '"activations_left":0')
 			res := ScriptObj.EDDRequest('activate_license', ScriptObj.eddID, license)
+		else if InStr(res, '"activations_left":0')
+			return MsgBox('You have reached the limit of activations for this license', 'Error', 'IconX')
 
 		return InStr(res, '"license":"valid"')
 	}
