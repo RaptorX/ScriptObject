@@ -56,6 +56,12 @@ class ScriptObj {
 	static systemID := ''
 	static license  := ''
 
+	author          := ''
+	homepagetext    := ''
+	homepagelink    := ''
+	donateLink      := ''
+	email           := ''
+
 	name {
 		get => A_ScriptName
 		set {
