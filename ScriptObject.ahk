@@ -306,7 +306,7 @@ class ScriptObj {
 	static isNewVersionAvailable(current, upcoming)
 	{
 		if Type(current) != 'Array'
-		|| Type(upcoming) != 'Array'
+		|| Type(upcoming) != 'String'
 			throw ValueError('Invalid value. This function only accepts arrays.',
 					A_ThisFunc, 'current: ' Type(current) ' / upcoming: ' Type(upcoming))
 
@@ -500,6 +500,8 @@ class ScriptObj {
 		http.Send()
 		return http.responseText
 	}
+
+	static GetEDDVersion() => JSON.parse(ScriptObj.EDDRequest('get_version', ScriptObj.eddID, ScriptObj.license))
 
 	static GetSystemID()
 	{
