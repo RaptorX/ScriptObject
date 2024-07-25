@@ -185,7 +185,7 @@ class ScriptObj {
 		; compare versions
 		upcomingVer := ScriptObj.GetUpcomingVersion(verFile)
 
-		if !this.isNewVersionAvailable(this.version, upcomingVer)
+		if !ScriptObj.isNewVersionAvailable(this.version, upcomingVer)
 			throw Error('No new version available.', A_ThisFunc, 1)
 
 		if MsgBox('A new version is available, do you want to update?', 'New Version', 'Y/N') = 'No'
