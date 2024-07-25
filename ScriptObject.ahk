@@ -56,6 +56,12 @@ class ScriptObj {
 	static systemID := ''
 	static license  := ''
 
+	author          := ''
+	homepagetext    := ''
+	homepagelink    := ''
+	donateLink      := ''
+	email           := ''
+
 	name {
 		get => A_ScriptName
 		set {
@@ -179,7 +185,7 @@ class ScriptObj {
 		; compare versions
 		upcomingVer := ScriptObj.GetUpcomingVersion(verFile)
 
-		if !this.isNewVersionAvailable(this.version, upcomingVer)
+		if !ScriptObj.isNewVersionAvailable(this.version, upcomingVer)
 			throw Error('No new version available.', A_ThisFunc, 1)
 
 		if MsgBox('A new version is available, do you want to update?', 'New Version', 'Y/N') = 'No'
@@ -300,7 +306,7 @@ class ScriptObj {
 	static isNewVersionAvailable(current, upcoming)
 	{
 		if Type(current) != 'Array'
-		|| Type(upcoming) != 'Array'
+		|| Type(upcoming) != 'String'
 			throw ValueError('Invalid value. This function only accepts arrays.',
 					A_ThisFunc, 'current: ' Type(current) ' / upcoming: ' Type(upcoming))
 
@@ -494,6 +500,8 @@ class ScriptObj {
 		http.Send()
 		return http.responseText
 	}
+
+	static GetEDDVersion() => ScriptObj.EDDRequest('get_version', ScriptObj.eddID, ScriptObj.license)
 
 	static GetSystemID()
 	{
