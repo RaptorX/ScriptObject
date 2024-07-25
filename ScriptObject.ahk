@@ -501,7 +501,7 @@ class ScriptObj {
 		return http.responseText
 	}
 
-	static GetEDDVersion() => JSON.parse(ScriptObj.EDDRequest('get_version', ScriptObj.eddID, ScriptObj.license))
+	static GetEDDVersion() => ScriptObj.EDDRequest('get_version', ScriptObj.eddID, ScriptObj.license)
 
 	static GetSystemID()
 	{
