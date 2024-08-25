@@ -359,7 +359,7 @@ class ScriptObj {
 	 * @param {String} homepagelink
 	 * @param {String} donateLink
 	 * @param {String} email
-	*/
+	 */
 	About(scriptName?, version?, author?, homepagetext?, homepagelink?, donateLink?, email?)
 	{
 		static doc := ''
@@ -456,11 +456,15 @@ class ScriptObj {
 			Cancel()
 
 		license := Gui('', 'License')
+		license.OnEvent('Close', Cancel)
+		license.OnEvent('Escape', Cancel)
+
 		license.AddText('w160', 'Paste the License Code here:')
 		license.AddEdit('w160 vLicenseNumber')
 		license.AddButton('w75 vTest', 'Save').OnEvent('Click', Save)
 		license.AddButton('w75 x+10', 'Cancel').OnEvent('Click', Cancel)
 		license.Show()
+		WinWaitClose license
 		return
 
 		Save(*)
@@ -481,11 +485,7 @@ class ScriptObj {
 			}
 		}
 
-		Cancel(*)
-		{
-			MsgBox 'This program cannot run without a license.', 'Unable to Run', 'IconX'
-			ExitApp 1
-		}
+		Cancel(*) => ExitApp(!!MsgBox('This program cannot run without a license.', 'Unable to Run', 'IconX'))
 
 		SaveLicense(LicenseNumber)
 		{
