@@ -2,7 +2,7 @@
 /**
  * =========================================================================== *
  * @author      RaptorX                                                        *
- * @version     0.2.2                                                          *
+ * @version     0.2.3                                                          *
  * @copyright   Copyright (c) 2024 RaptorX                                     *
  * @link        https://www.isaiasbaez.com                                     *
  * @created     2022-07-13                                                     *
@@ -57,12 +57,6 @@ class ScriptObj {
 	static eddID    := 0
 	static systemID := ''
 	static license  := ''
-
-	author          := ''
-	homepagetext    := ''
-	homepagelink    := ''
-	donateLink      := ''
-	email           := ''
 
 	name {
 		get => A_ScriptName
