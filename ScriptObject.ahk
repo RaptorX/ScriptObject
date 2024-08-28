@@ -1,16 +1,18 @@
 #Requires Autohotkey v2.0-
 /**
- * ============================================================================ *
- * @Author           : RaptorX                                                  *
- * @Homepage         :                                                          *
- *                                                                              *
- * @Created          : July 13, 2022                                            *
- * @Modified         : August 01, 2022                                          *
- *                                                                              *
- * @Description      :                                                          *
- * -------------------                                                          *
- * Small library to add similar functionality to all scripts                    *
- * ============================================================================ *
+ * =========================================================================== *
+ * @author      RaptorX                                                        *
+ * @version     0.1.0                                                          *
+ * @copyright   Copyright (c) 2024 RaptorX                                     *
+ * @link        https://www.isaiasbaez.com                                     *
+ * @created     2022-07-13                                                     *
+ * @modified    2024-08-25                                                     *
+ * @description                                                                *
+ * --------------------------------------------------------------------------- *
+ * Small library to add similar functionality to all scripts                   *
+ * =========================================================================== *
+ * @license     GPLv3                                                          *
+ * =========================================================================== *
  * License:                                                                     *
  * Copyright ©2022 RaptorX <GPLv3>                                              *
  *                                                                              *
