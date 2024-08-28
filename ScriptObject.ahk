@@ -1,33 +1,35 @@
 #Requires Autohotkey v2.0-
 /**
- * ============================================================================ *
- * @Author           : RaptorX                                                  *
- * @Homepage         :                                                          *
- *                                                                              *
- * @Created          : July 13, 2022                                            *
- * @Modified         : August 01, 2022                                          *
- *                                                                              *
- * @Description      :                                                          *
- * -------------------                                                          *
- * Small library to add similar functionality to all scripts                    *
- * ============================================================================ *
- * License:                                                                     *
- * Copyright ©2022 RaptorX <GPLv3>                                              *
- *                                                                              *
- * This program is free software: you can redistribute it and/or modify         *
- * it under the terms of the **GNU General Public License** as published by     *
- * the Free Software Foundation, either version 3 of the License, or            *
- * (at your option) any later version.                                          *
- *                                                                              *
- * This program is distributed in the hope that it will be useful,              *
- * but **WITHOUT ANY WARRANTY**; without even the implied warranty of           *
- * **MERCHANTABILITY** or **FITNESS FOR A PARTICULAR PURPOSE**.  See the        *
- * **GNU General Public License** for more details.                             *
- *                                                                              *
- * You should have received a copy of the **GNU General Public License**        *
- * along with this program. If not, see:                                        *
- * <http://www.gnu.org/licenses/gpl-3.0.txt>                                    *
- * ============================================================================ *
+ * =========================================================================== *
+ * @author      RaptorX                                                        *
+ * @version     0.2.2                                                          *
+ * @copyright   Copyright (c) 2024 RaptorX                                     *
+ * @link        https://www.isaiasbaez.com                                     *
+ * @created     2022-07-13                                                     *
+ * @modified    2024-08-28                                                     *
+ * @description                                                                *
+ * --------------------------------------------------------------------------- *
+ * Small library to add similar functionality to all scripts                   *
+ * =========================================================================== *
+ * @license     GPLv3                                                          *
+ * =========================================================================== *
+ * License:                                                                    *
+ * Copyright ©2022 RaptorX <GPLv3>                                             *
+ *                                                                             *
+ * This program is free software: you can redistribute it and/or modify        *
+ * it under the terms of the **GNU General Public License** as published by    *
+ * the Free Software Foundation, either version 3 of the License, or           *
+ * (at your option) any later version.                                         *
+ *                                                                             *
+ * This program is distributed in the hope that it will be useful,             *
+ * but **WITHOUT ANY WARRANTY**; without even the implied warranty of          *
+ * **MERCHANTABILITY** or **FITNESS FOR A PARTICULAR PURPOSE**.  See the       *
+ * **GNU General Public License** for more details.                            *
+ *                                                                             *
+ * You should have received a copy of the **GNU General Public License**       *
+ * along with this program. If not, see:                                       *
+ * <http://www.gnu.org/licenses/gpl-3.0.txt>                                   *
+ * =========================================================================== *
  */
 
 /**
@@ -79,13 +81,19 @@ class ScriptObj {
 		}
 	}
 
+	author       := ''
+	homepagetext := ''
+	homepagelink := ''
+	donateLink   := ''
+	email        := ''
+
 	/**
 	Function: Autostart(status)
 	This Adds the current script to the autorun section for the current
 	user.
 
 	Parameters:
-	status - Autostart status, It can be either true or false.
+	@param {Integer} status - Autostart status, It can be either true or false.
 	 */
 	Autostart(status)
 	{
@@ -113,9 +121,9 @@ class ScriptObj {
 	Shows a custom image as a splash screen with a simple fading animation
 
 	Parameters:
-	img         - file to be displayed.
-	speed (opt) - how fast the fading animation will be. Higher value is faster.
-	pause (opt) - how long (in seconds) the image will be paused after fully displayed.
+	@param {String}  img         - file to be displayed.
+	@param {Integer} speed (opt) - how fast the fading animation will be. Higher value is faster.
+	@param {Integer} pause (opt) - how long (in seconds) the image will be paused after fully displayed.
 	 */
 	Splash(img, speed:=10, pause:=2)
 	{
@@ -159,11 +167,12 @@ class ScriptObj {
 	Compares and automatically downloads the new script file and reloads the script.
 
 	Parameters:
-	verFile - Version File
+	@param {String} verFile - Version File
 	          Remote version file to be validated against.
-	dwnFile - Download File
+	@param {String} dwnFile - Download File
 	          Script file to be downloaded and installed if a new version is found.
 	          Should be a zip file that will be unzipped by the function
+	@returns {Integer}
 
 	Notes:
 	The versioning file should only contain a version string and nothing else.
@@ -290,6 +299,11 @@ class ScriptObj {
 		}
 	}
 
+	/**
+	 *
+	 * @param {String} verFile
+	 * @returns {Array}
+	 */
 	static GetUpcomingVersion(verFile)
 	{
 		static VARIANT_TRUE  := -1
@@ -303,6 +317,12 @@ class ScriptObj {
 		return StrSplit(http.responseText, '.')
 	}
 
+	/**
+	 *
+	 * @param {String} current
+	 * @param {String} upcoming
+	 * @returns {Integer}
+	 */
 	static isNewVersionAvailable(current, upcoming)
 	{
 		if Type(current) != 'Array'
@@ -337,6 +357,17 @@ class ScriptObj {
 		the class variables if provided. This allows you to set all information once
 		when instatiating the class, and the about GUI will be filled out automatically.
 	*/
+
+	/**
+	 *
+	 * @param {String} scriptName
+	 * @param {String} version
+	 * @param {String} author
+	 * @param {String} homepagetext
+	 * @param {String} homepagelink
+	 * @param {String} donateLink
+	 * @param {String} email
+	 */
 	About(scriptName?, version?, author?, homepagetext?, homepagelink?, donateLink?, email?)
 	{
 		static doc := ''
@@ -433,11 +464,15 @@ class ScriptObj {
 			Cancel()
 
 		license := Gui('', 'License')
+		license.OnEvent('Close', Cancel)
+		license.OnEvent('Escape', Cancel)
+
 		license.AddText('w160', 'Paste the License Code here:')
 		license.AddEdit('w160 vLicenseNumber')
 		license.AddButton('w75 vTest', 'Save').OnEvent('Click', Save)
 		license.AddButton('w75 x+10', 'Cancel').OnEvent('Click', Cancel)
 		license.Show()
+		WinWaitClose license
 		return
 
 		Save(*)
@@ -458,11 +493,7 @@ class ScriptObj {
 			}
 		}
 
-		Cancel(*)
-		{
-			MsgBox 'This program cannot run without a license.', 'Unable to Run', 'IconX'
-			ExitApp 1
-		}
+		Cancel(*) => ExitApp(!!MsgBox('This program cannot run without a license.', 'Unable to Run', 'IconX'))
 
 		SaveLicense(LicenseNumber)
 		{
@@ -472,6 +503,11 @@ class ScriptObj {
 
 	}
 
+	/**
+	 *
+	 * @param {String} license
+	 * @returns {String | Integer}
+	 */
 	static IsLicenceValid(license)
 	{
 		res := ScriptObj.EDDRequest('check_license', ScriptObj.eddID, license)
@@ -486,6 +522,12 @@ class ScriptObj {
 		return InStr(res, '"license":"valid"')
 	}
 
+	/**
+	 *
+	 * @param {String} Action
+	 * @param {String} item_id
+	 * @param {String} license
+	 */
 	static EDDRequest(Action, item_id, license)
 	{
 		static url_template := 'https://the-Automator.com/?edd_action={1}&item_id={2}&license={3}&url={4}'
