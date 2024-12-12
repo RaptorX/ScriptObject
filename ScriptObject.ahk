@@ -73,9 +73,9 @@ class ScriptObj {
 			case false:
 				loop read A_ScriptFullPath
 				{
-					if A_Index > 50
+					if A_Index > 150
 						break
-					if RegExMatch(A_LoopReadLine, 'i)(@|Set-)version\s*(?<version>.*?)\s', &matched)
+					if RegExMatch(A_LoopReadLine, 'i)(?:@|Set)version\s*(?<version>[\w.-]+?)(:?\s|$)', &matched)
 						return matched.version
 				}
 
