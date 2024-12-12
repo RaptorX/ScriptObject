@@ -2,11 +2,11 @@
 /**
  * =========================================================================== *
  * @author      RaptorX                                                        *
- * @version     0.2.3                                                          *
+ * @version     0.3.0                                                          *
  * @copyright   Copyright (c) 2024 RaptorX                                     *
  * @link        https://www.isaiasbaez.com                                     *
  * @created     2022-07-13                                                     *
- * @modified    2024-08-28                                                     *
+ * @modified    2024-12-12                                                     *
  * @description                                                                *
  * --------------------------------------------------------------------------- *
  * Small library to add similar functionality to all scripts                   *
