@@ -40,7 +40,6 @@
  * --- ahk
 script := {
 	        base : ScriptObj(),
-	     version : '0.0.0',
 	      author : '',
 	       email : '',
 	     crtdate : '',
@@ -66,12 +65,22 @@ class ScriptObj {
 	}
 
 	version {
-		get => this._version
-		set {
-			if Type(Value) = 'String' && RegExMatch(Value, '\d+\.\d+\.\d+')
-				return this._version := StrSplit(Value, '.')
-			else
-				throw ValueError('This property must be a SemVer string.', A_ThisFunc, 'Version:' Value)
+		get {
+			switch A_IsCompiled
+			{
+			case true:
+				return FileGetVersion(A_ScriptFullPath)
+			case false:
+				loop read A_ScriptFullPath
+				{
+					if A_Index > 50
+						break
+					if RegExMatch(A_LoopReadLine, 'i)(@|Set-)version\s*(?<version>.*?)\s', &matched)
+						return matched.version
+				}
+
+				return '0.0.0'
+			}
 		}
 	}
 
