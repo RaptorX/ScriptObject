@@ -69,7 +69,7 @@ class ScriptObj {
 			switch A_IsCompiled
 			{
 			case true:
-				return FileGetVersion(A_ScriptFullPath)
+				return RegexReplace(FileGetVersion(A_ScriptFullPath), '\.\d+$') ; convert to SemVer
 			case false:
 				loop read A_ScriptFullPath
 				{
