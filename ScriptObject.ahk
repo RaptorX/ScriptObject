@@ -464,16 +464,17 @@ class ScriptObj {
 			return ScriptObj.license := lic_number
 
 		if Msgbox(errMsg, 'No license', 'IconX Y/N') = 'No'
-			Cancel()
+			ScriptObj.Cancel('This program cannot run without a license.', 'Unable to Run')
 
 		license := Gui('', 'License')
-		license.OnEvent('Close', Cancel)
-		license.OnEvent('Escape', Cancel)
+		license.OnEvent('Close', (*)=> ScriptObj.Cancel('This program cannot run without a license.', 'Unable to Run'))
+		license.OnEvent('Escape',(*)=> ScriptObj.Cancel('This program cannot run without a license.', 'Unable to Run'))
 
 		license.AddText('w160', 'Paste the License Code here:')
 		license.AddEdit('w160 vLicenseNumber')
 		license.AddButton('w75 vTest', 'Save').OnEvent('Click', Save)
-		license.AddButton('w75 x+10', 'Cancel').OnEvent('Click', Cancel)
+		license.AddButton('w75 x+10', 'Cancel')
+		       .OnEvent('Click', (*)=> ScriptObj.Cancel('This program cannot run without a license.', 'Unable to Run'))
 		license.Show()
 		WinWaitClose license
 		return
@@ -490,13 +491,9 @@ class ScriptObj {
 				Reload
 			}
 			else
-			{
-				MsgBox 'The license you entered is invalid and cannot be activated.', 'Invalid License', 'IconX'
-				ExitApp 1
-			}
+				ScriptObj.Cancel('The license you entered is invalid and cannot be activated.', 'Invalid License')
 		}
 
-		Cancel(*) => ExitApp(!!MsgBox('This program cannot run without a license.', 'Unable to Run', 'IconX'))
 
 		SaveLicense(LicenseNumber)
 		{
@@ -505,6 +502,8 @@ class ScriptObj {
 		}
 
 	}
+
+	static Cancel(msg, title) => ExitApp(!!MsgBox(msg, title, 'IconX'))
 
 	/**
 	 *
@@ -520,7 +519,7 @@ class ScriptObj {
 		&& !InStr(res, '"activations_left":0')
 			res := ScriptObj.EDDRequest('activate_license', ScriptObj.eddID, license)
 		else if InStr(res, '"activations_left":0')
-			return MsgBox('You have reached the limit of activations for this license', 'Error', 'IconX')
+			return ScriptObj.Cancel('You have reached the limit of activations for this license', 'Error')
 
 		return InStr(res, '"license":"valid"')
 	}
