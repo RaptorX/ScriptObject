@@ -4,6 +4,8 @@
 #Include <v2\Yunit\Window>
 #Include <v2\ScriptObject\ScriptObject>
 
+;@Ahk2Exe-SetVersion 1.30.0
+
 Yunit.Use(YunitWindow).Test(ScriptObjectTest)
 
 class ScriptObjectTest
@@ -13,14 +15,13 @@ class ScriptObjectTest
 		test1_name()
 		{
 			script := ScriptObj()
-			Yunit.Assert(script.name == "Unit Tests")
+			Yunit.Assert(script.name == "Unit Tests.ahk")
 		}
 
 		test2_version()
 		{
 			script := ScriptObj()
-			script.version := "1.30.0"
-			Yunit.Assert(Type(script.version) = "Array")
+			Yunit.Assert(script.version = "1.30.0")
 
 		}
 	}
@@ -137,7 +138,6 @@ class ScriptObjectTest
 			test1_UpdateTrue()
 			{
 				script := ScriptObj()
-				script.version := "1.31.0"
 
 				updated := script.Update(
 					"https://raw.githubusercontent.com/RaptorX/WindowSnipping/master/ver",
@@ -191,6 +191,7 @@ class ScriptObjectTest
 			{
 				static WS_VISIBLE := 0x10000000
 				script := ScriptObj()
+				Yunit.Assert(false, 'need way to implement the test')
 				ScriptObj.GetLicense()
 
 				Yunit.Assert(WinExist('License'), 'the window was not created')
