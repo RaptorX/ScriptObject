@@ -2,7 +2,7 @@
 /**
  * =========================================================================== *
  * @author      RaptorX                                                        *
- * @version     0.3.1                                                          *
+ * @version     0.3.5                                                          *
  * @copyright   Copyright (c) 2024 RaptorX                                     *
  * @link        https://www.isaiasbaez.com                                     *
  * @created     2022-07-13                                                     *
