@@ -539,9 +539,10 @@ class ScriptObj {
 		http.Open('GET', URL)
 		http.SetRequestHeader('Pragma', 'no-cache')
 		http.SetRequestHeader('Cache-Control', 'no-cache, no-store')
-		http.SetRequestHeader('User-Agent', 'Mozilla/4.0 (compatible; Win32)')
+		http.SetRequestHeader('User-Agent', 'Mozilla/5.0 (compatible; Win32)')
 
 		http.Send()
+		; OutputDebug http.responseText
 		return http.responseText
 	}
 
